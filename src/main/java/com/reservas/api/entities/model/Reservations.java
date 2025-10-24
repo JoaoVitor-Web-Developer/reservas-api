@@ -1,10 +1,7 @@
-package com.reservas.api.model;
+package com.reservas.api.entities.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -27,6 +24,12 @@ public class Reservations {
 
 	@Column(nullable = false)
 	private BigDecimal totalValue;
+
+	@Column(nullable = false)
+	private LocalDateTime createdAt;
+
+	@Column(nullable = false)
+	private LocalDateTime updatedAt;
 
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)

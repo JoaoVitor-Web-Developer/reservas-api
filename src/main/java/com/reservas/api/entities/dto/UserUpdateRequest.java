@@ -1,4 +1,4 @@
-package com.reservas.api.dto;
+package com.reservas.api.entities.dto;
 
 import lombok.Data;
 

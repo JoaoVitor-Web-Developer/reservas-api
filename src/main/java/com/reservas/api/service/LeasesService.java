@@ -1,19 +1,27 @@
 package com.reservas.api.service;
 
-import com.reservas.api.dto.LeasesRequest;
-import com.reservas.api.dto.LeasesResponse;
+import com.reservas.api.entities.dto.LeasesRequest;
+import com.reservas.api.entities.dto.LeasesResponse;
+import com.reservas.api.entities.dto.ReservationResponse;
+import com.reservas.api.entities.mapper.ReservationMapper;
+import com.reservas.api.entities.model.ReservationStatus;
+import com.reservas.api.entities.model.Reservations;
+import com.reservas.api.entities.model.User;
 import com.reservas.api.exception.BusinessException;
 import com.reservas.api.exception.ResourceNotFoundException;
-import com.reservas.api.mapper.LeasesMapper;
-import com.reservas.api.model.Leases;
+import com.reservas.api.entities.mapper.LeasesMapper;
+import com.reservas.api.entities.model.Leases;
 import com.reservas.api.repository.LeasesRepository;
 import com.reservas.api.repository.ReservationRepository;
+import com.reservas.api.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -25,6 +33,8 @@ public class LeasesService {
 	private final LeasesRepository leasesRepository;
 	private final LeasesMapper leasesMapper;
 	private final ReservationRepository reservationRepository;
+	private final UserRepository userRepository;
+	private final ReservationMapper reservationMapper;
 
 	@Transactional(readOnly = true)
 	public List<LeasesResponse> listAll() {
@@ -54,7 +64,7 @@ public class LeasesService {
 		Leases newLeases = leasesMapper.toEntity(leasesRequest);
 		newLeases.setCreatedAt(LocalDate.now());
 
-		Leases savedLeases = leasesRepository.save(leasesMapper.toEntity(leasesRequest));
+		Leases savedLeases = leasesRepository.save(newLeases);
 		return leasesMapper.toResponse(savedLeases);
 	}
 
@@ -108,5 +118,57 @@ public class LeasesService {
 		return leasesDisponibles.stream()
 				.map(leasesMapper::toResponse)
 				.collect(Collectors.toList());
+	}
+
+	@Transactional
+	public ReservationResponse hireLease(UUID leaseId, UUID userId, LocalDateTime startDate, LocalDateTime endDate) {
+
+		if (startDate == null || endDate == null) {
+			throw  new BusinessException("Start date and end date cannot be null");
+		}
+
+		if (endDate.isBefore(startDate) || endDate.isEqual(startDate)) {
+			throw new BusinessException("End date must be after start date");
+		}
+
+		if (startDate.toLocalDate().isBefore(LocalDate.now())) {
+			throw new BusinessException("Start date cannot be in the past");
+		}
+
+		Leases leases = leasesRepository.findById(leaseId)
+				.orElseThrow(() -> new ResourceNotFoundException("Leases type not found with id: " + leaseId));
+
+		User user = userRepository.findById(userId)
+				.orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
+
+		boolean hasConflictingReservation = reservationRepository
+				.existsByLeasesAndStatusInAndStartDateLessThanEqualAndEndDateGreaterThanEqual(
+						leases,
+						List.of(ReservationStatus.PENDING, ReservationStatus.CONFIRMED),
+						endDate,
+						startDate
+		);
+
+		if (hasConflictingReservation) {
+			throw  new BusinessException("This property is already reserved for the selected period");
+		}
+
+		long numberOfDays = ChronoUnit.DAYS.between(startDate.toLocalDate(), endDate.toLocalDate()) + 1;
+		BigDecimal dailyPrice = leases.getHourValue();
+		BigDecimal totalValue = dailyPrice.multiply(BigDecimal.valueOf(numberOfDays));
+
+		Reservations reservation = new Reservations();
+		reservation.setLeases(leases);
+		reservation.setUser(user);
+		reservation.setStartDate(startDate);
+		reservation.setEndDate(endDate);
+		reservation.setStatus(ReservationStatus.PENDING);
+		reservation.setCreatedAt(LocalDateTime.now());
+		reservation.setUpdatedAt(LocalDateTime.now());
+		reservation.setTotalValue(totalValue);
+
+		Reservations savedReservation = reservationRepository.save(reservation);
+
+		return reservationMapper.toResponse(savedReservation);
 	}
 }

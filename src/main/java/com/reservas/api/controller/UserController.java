@@ -1,7 +1,7 @@
 package com.reservas.api.controller;
 
-import com.reservas.api.dto.UserResponse;
-import com.reservas.api.dto.UserUpdateRequest;
+import com.reservas.api.entities.dto.UserResponse;
+import com.reservas.api.entities.dto.UserUpdateRequest;
 import com.reservas.api.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

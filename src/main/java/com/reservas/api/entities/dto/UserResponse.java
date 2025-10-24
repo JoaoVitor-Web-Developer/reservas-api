@@ -1,7 +1,8 @@
-package com.reservas.api.dto;
+package com.reservas.api.entities.dto;
 
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -12,5 +13,5 @@ public class UserResponse {
 	private String email;
 	private String phone;
 	private String cpf;
-	private LocalDateTime createdAt;
+	private LocalDate createdAt;
 }

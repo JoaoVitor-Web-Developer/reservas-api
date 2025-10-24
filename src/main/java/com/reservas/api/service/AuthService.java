@@ -1,9 +1,9 @@
 package com.reservas.api.service;
 
-import com.reservas.api.dto.LoginRequest;
-import com.reservas.api.dto.LoginResponse;
-import com.reservas.api.dto.UserRegisterRequest;
-import com.reservas.api.dto.UserResponse;
+import com.reservas.api.entities.dto.LoginRequest;
+import com.reservas.api.entities.dto.LoginResponse;
+import com.reservas.api.entities.dto.UserRegisterRequest;
+import com.reservas.api.entities.dto.UserResponse;
 import com.reservas.api.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;

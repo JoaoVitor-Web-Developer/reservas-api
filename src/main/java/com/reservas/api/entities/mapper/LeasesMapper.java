@@ -1,11 +1,11 @@
-package com.reservas.api.mapper;
+package com.reservas.api.entities.mapper;
 
-import com.reservas.api.dto.LeasesRequest;
-import com.reservas.api.dto.LeasesResponse;
-import com.reservas.api.model.Leases;
+import com.reservas.api.entities.dto.LeasesRequest;
+import com.reservas.api.entities.dto.LeasesResponse;
+import com.reservas.api.entities.model.Leases;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Component
 public class LeasesMapper {
@@ -18,6 +18,7 @@ public class LeasesMapper {
 		leases.setHourValue(request.getHourValue());
 		leases.setMaxTime(request.getMaxTime());
 		leases.setMinTime(request.getMinTime());
+		leases.setCreatedAt(LocalDate.now());
 		return leases;
 	}
 
@@ -30,6 +31,7 @@ public class LeasesMapper {
 		response.setHourValue(entity.getHourValue());
 		response.setMaxTime(entity.getMaxTime());
 		response.setMinTime(entity.getMinTime());
+		response.setCreatedAt(LocalDate.now());
 		return response;
 	}
 

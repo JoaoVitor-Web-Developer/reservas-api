@@ -1,7 +1,7 @@
 package com.reservas.api.repository;
 
-import com.reservas.api.model.Leases;
-import com.reservas.api.model.LeasesType;
+import com.reservas.api.entities.model.Leases;
+import com.reservas.api.entities.model.LeasesType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

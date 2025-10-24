@@ -1,7 +1,9 @@
-package com.reservas.api.dto;
+package com.reservas.api.entities.dto;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Data
@@ -10,8 +12,8 @@ public class LeasesResponse {
 	private String name;
 	private String type;
 	private String description;
-	private String hourValue;
+	private BigDecimal hourValue;
 	private Integer maxTime;
 	private Integer minTime;
-	private String createdAt;
+	private LocalDate createdAt;
 }

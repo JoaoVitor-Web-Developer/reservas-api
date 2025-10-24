@@ -1,13 +1,16 @@
 package com.reservas.api.controller;
 
-import com.reservas.api.dto.LeasesRequest;
-import com.reservas.api.dto.LeasesResponse;
+import com.reservas.api.entities.dto.LeasesRequest;
+import com.reservas.api.entities.dto.LeasesResponse;
+import com.reservas.api.entities.dto.ReservationResponse;
 import com.reservas.api.service.LeasesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -21,9 +24,13 @@ public class LeasesController {
 
 	@GetMapping("/disponibles")
 	public List<LeasesResponse> getDisponibles(
-			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
-			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
-		return leasesService.listDisponibles(startDate, endDate);
+			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+
+		LocalDateTime startDateTime = startDate.atStartOfDay(); // Ex: 2025-10-24T00:00:00
+		LocalDateTime endDateTime = endDate.atTime(23, 59, 59); // Ex: 2025-10-24T23:59:59
+
+		return leasesService.listDisponibles(startDateTime, endDateTime);
 	}
 
 	@PostMapping
@@ -50,5 +57,17 @@ public class LeasesController {
 	@DeleteMapping("/{id}")
 	public void deleteLease(@PathVariable UUID id) {
 		leasesService.delete(id);
+	}
+
+	@PostMapping("/hire-lease/{id}/{userId}")
+	public ResponseEntity<ReservationResponse> hireLease(@PathVariable UUID id, @PathVariable UUID userId, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+	                                                     @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+
+		LocalDateTime startDateTime = startDate.atStartOfDay(); // Ex: 2025-10-24T00:00:00
+		LocalDateTime endDateTime = endDate.atTime(23, 59, 59);
+
+		ReservationResponse newReservation = leasesService.hireLease(id, userId, startDateTime, endDateTime);
+
+		return ResponseEntity.status(HttpStatus.CREATED).body(newReservation);
 	}
 }

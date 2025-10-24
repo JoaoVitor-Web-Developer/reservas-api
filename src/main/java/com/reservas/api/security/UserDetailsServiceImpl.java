@@ -1,6 +1,5 @@
 package com.reservas.api.security;
 
-import com.reservas.api.model.User;
 import com.reservas.api.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

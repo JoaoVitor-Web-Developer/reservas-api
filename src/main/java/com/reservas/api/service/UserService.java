@@ -1,13 +1,12 @@
 package com.reservas.api.service;
 
-import com.reservas.api.dto.UserRegisterRequest;
-import com.reservas.api.dto.UserResponse;
-import com.reservas.api.dto.UserUpdateRequest;
+import com.reservas.api.entities.dto.UserRegisterRequest;
+import com.reservas.api.entities.dto.UserResponse;
+import com.reservas.api.entities.dto.UserUpdateRequest;
 import com.reservas.api.exception.BusinessException;
 import com.reservas.api.exception.ResourceNotFoundException;
-import com.reservas.api.mapper.UserMapper;
-import com.reservas.api.model.User;
-import com.reservas.api.repository.LeasesRepository;
+import com.reservas.api.entities.mapper.UserMapper;
+import com.reservas.api.entities.model.User;
 import com.reservas.api.repository.ReservationRepository;
 import com.reservas.api.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.reservas.api.model;
+package com.reservas.api.entities.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
@@ -39,7 +40,7 @@ public class User implements UserDetails {
 	private String cpf;
 
 	@Column(nullable = false)
-	private LocalDateTime createdAt;
+	private LocalDate createdAt;
 
 	@Column(nullable = false)
 	private String password;

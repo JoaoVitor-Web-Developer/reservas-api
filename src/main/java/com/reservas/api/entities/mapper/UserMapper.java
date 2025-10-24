@@ -1,11 +1,12 @@
-package com.reservas.api.mapper;
+package com.reservas.api.entities.mapper;
 
-import com.reservas.api.dto.UserRegisterRequest;
-import com.reservas.api.dto.UserResponse;
-import com.reservas.api.dto.UserUpdateRequest;
-import com.reservas.api.model.User;
+import com.reservas.api.entities.dto.UserRegisterRequest;
+import com.reservas.api.entities.dto.UserResponse;
+import com.reservas.api.entities.dto.UserUpdateRequest;
+import com.reservas.api.entities.model.User;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Component
@@ -18,7 +19,7 @@ public class UserMapper {
 		user.setPassword(request.getPassword());
 		user.setPhone(request.getPhone());
 		user.setCpf(request.getCpf());
-		user.setCreatedAt(LocalDateTime.now());
+		user.setCreatedAt(LocalDate.now());
 		return user;
 	}
 

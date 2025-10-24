@@ -1,4 +1,4 @@
-package com.reservas.api.model;
+package com.reservas.api.entities.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -32,7 +33,7 @@ public class Leases {
 	private String description;
 
 	@Column(nullable = false)
-	private String hourValue;
+	private BigDecimal hourValue;
 
 	@Column(nullable = false)
 	private Integer maxTime;
