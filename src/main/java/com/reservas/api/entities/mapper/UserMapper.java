@@ -34,7 +34,7 @@ public class UserMapper {
 		return response;
 	}
 
-	public void toEntity(UserUpdateRequest request, User user) {
+	public void updateEntityFromRequest(UserUpdateRequest request, User user) {
 		user.setName(request.getName());
 		user.setEmail(request.getEmail());
 		user.setPassword(request.getPassword());

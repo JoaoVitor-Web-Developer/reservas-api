@@ -1,5 +1,6 @@
 package com.reservas.api.entities.model;
 
+import com.reservas.api.entities.enums.ReservationStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 

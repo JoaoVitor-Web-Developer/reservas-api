@@ -1,7 +1,7 @@
 package com.reservas.api.repository;
 
 import com.reservas.api.entities.model.Leases;
-import com.reservas.api.entities.model.ReservationStatus;
+import com.reservas.api.entities.enums.ReservationStatus;
 import com.reservas.api.entities.model.Reservations;
 import com.reservas.api.entities.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 

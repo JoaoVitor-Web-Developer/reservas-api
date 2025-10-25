@@ -1,6 +1,6 @@
 package com.reservas.api.entities.dto;
 
-import com.reservas.api.entities.model.LeasesType;
+import com.reservas.api.entities.enums.LeasesType;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

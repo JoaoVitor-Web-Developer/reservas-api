@@ -1,5 +1,6 @@
 package com.reservas.api.entities.model;
 
+import com.reservas.api.entities.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -57,9 +59,12 @@ public class User implements UserDetails {
 	@Column(nullable = false)
 	private boolean enabled = true;
 
+	@Enumerated(EnumType.STRING)
+	private Role role;
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+		return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
 	}
 
 	@Override
@@ -85,5 +90,12 @@ public class User implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return this.enabled;
+	}
+
+	@PrePersist
+	public void setDefaultRole() {
+		if (role == null) {
+			role = Role.USER;
+		}
 	}
 }

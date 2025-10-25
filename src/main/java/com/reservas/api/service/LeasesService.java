@@ -4,7 +4,7 @@ import com.reservas.api.entities.dto.LeasesRequest;
 import com.reservas.api.entities.dto.LeasesResponse;
 import com.reservas.api.entities.dto.ReservationResponse;
 import com.reservas.api.entities.mapper.ReservationMapper;
-import com.reservas.api.entities.model.ReservationStatus;
+import com.reservas.api.entities.enums.ReservationStatus;
 import com.reservas.api.entities.model.Reservations;
 import com.reservas.api.entities.model.User;
 import com.reservas.api.exception.BusinessException;

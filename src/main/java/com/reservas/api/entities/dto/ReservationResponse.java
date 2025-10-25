@@ -1,6 +1,6 @@
 package com.reservas.api.entities.dto;
 
-import com.reservas.api.entities.model.ReservationStatus;
+import com.reservas.api.entities.enums.ReservationStatus;
 import lombok.Data;
 
 import java.math.BigDecimal;

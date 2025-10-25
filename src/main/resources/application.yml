@@ -14,6 +14,30 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
 
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    display-request-duration: true
+    groups-order: ASC
+    operations-sorter: method
+    info:
+      title: Reservas API
+      version: v1.0.0
+      description: API para gerenciamento de reservas, locações e clientes.
+      contact:
+        name: Seu Nome / Equipe
+        email: seu.email@example.com
+    servers:
+      - url: http://localhost:8080
+        description: Ambiente de Desenvolvimento Local
+
 jwt:
   secret-key: cdcbe42a8d697568a59297eaa62fb60da018dfb0ef2716b45637fd24736097d5
   expiration-ms: 86400000
+
+admin:
+  default:
+    email: admin@admin.com
+    password: admin

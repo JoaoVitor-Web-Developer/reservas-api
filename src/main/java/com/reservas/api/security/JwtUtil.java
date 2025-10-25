@@ -73,4 +73,8 @@ public class JwtUtil {
 		byte[] keyBytes = secretKet.getBytes();
 		return Keys.hmacShaKeyFor(keyBytes);
 	}
+
+	public Long getExpirationMs() {
+		return expirationTime;
+	}
 }

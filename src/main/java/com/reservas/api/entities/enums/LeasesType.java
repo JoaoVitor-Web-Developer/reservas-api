@@ -1,4 +1,4 @@
-package com.reservas.api.entities.model;
+package com.reservas.api.entities.enums;
 
 public enum LeasesType {
 	DAILY("Diária"),

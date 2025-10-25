@@ -32,8 +32,16 @@ public class AuthService {
 
 			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 			String token = jwtUtil.generateToken(userDetails);
+			
+			UserResponse userResponse = userService.findByEmail(loginRequest.getEmail());
+			
+			Long expiresIn = jwtUtil.getExpirationMs();
+			
+			LoginResponse response = new LoginResponse();
+			response.setToken(token);
+			response.setExpiresIn(expiresIn);
 
-			return new LoginResponse(token);
+			return response;
 
 		} catch (BadCredentialsException e) {
 			throw new BadCredentialsException("Invalid email or password");
