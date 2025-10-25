@@ -1,5 +1,6 @@
 package com.reservas.api.entities.dto;
 
+import com.reservas.api.entities.enums.LeasesType;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -10,7 +11,7 @@ import java.util.UUID;
 public class LeasesResponse {
 	private UUID id;
 	private String name;
-	private String type;
+	private LeasesType type;
 	private String description;
 	private BigDecimal hourValue;
 	private Integer maxTime;

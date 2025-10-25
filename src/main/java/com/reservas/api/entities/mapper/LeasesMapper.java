@@ -26,7 +26,7 @@ public class LeasesMapper {
 		LeasesResponse response = new LeasesResponse();
 		response.setId(entity.getId());
 		response.setName(entity.getName());
-		response.setType(entity.getType().name());
+		response.setType(entity.getType());
 		response.setDescription(entity.getDescription());
 		response.setHourValue(entity.getHourValue());
 		response.setMaxTime(entity.getMaxTime());

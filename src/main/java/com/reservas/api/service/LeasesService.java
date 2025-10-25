@@ -103,21 +103,27 @@ public class LeasesService {
 	@Transactional(readOnly = true)
 	public List<LeasesResponse> listDisponibles(LocalDateTime startDate, LocalDateTime endDate) {
 		if (endDate.isBefore(startDate) || endDate.isEqual(startDate)) {
-			throw new BusinessException("Start date must be after end date");
+			throw new BusinessException("End date/time must be after start date/time");
 		}
 
-		List<UUID> leasesIndisponibles = reservationRepository.findTypesLocationsIdWithConflictingReservations(startDate, endDate);
+		List<UUID> leasesIndisponibles = reservationRepository.findTypesLocationsIdWithConflictingReservations(
+				startDate,
+				endDate,
+				ReservationStatus.CANCELED
+		);
+
 		List<Leases> leasesDisponibles;
 
 		if (leasesIndisponibles.isEmpty()) {
 			leasesDisponibles = leasesRepository.findAll();
 		} else {
-			leasesDisponibles = leasesRepository.findAllByIdNotIn(leasesIndisponibles);
+
+			leasesDisponibles = leasesRepository.findByIdNotIn(leasesIndisponibles);
 		}
 
 		return leasesDisponibles.stream()
-				.map(leasesMapper::toResponse)
-				.collect(Collectors.toList());
+		                        .map(leasesMapper::toResponse)
+		                        .collect(Collectors.toList());
 	}
 
 	@Transactional

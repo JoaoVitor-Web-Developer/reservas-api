@@ -2,7 +2,9 @@ package com.reservas.api.entities.model;
 
 import com.reservas.api.entities.enums.ReservationStatus;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -11,6 +13,8 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "reservations")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Reservations {
 
 	@Id
