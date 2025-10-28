@@ -59,19 +59,20 @@ public class SecurityConfig {
 		    }))
 		    .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 		    .authorizeHttpRequests(auth -> auth
-				                           // --- ROTAS PÚBLICAS ---
-				                           .requestMatchers("/auth/**").permitAll() // Login e Registro (USER)
-				                           .requestMatchers(HttpMethod.GET, "/leases/**").permitAll() // Ver/Buscar locações (Leases)
+				                           .requestMatchers("/auth/**").permitAll()
+				                           .requestMatchers(HttpMethod.GET, "/leases/**").permitAll()
 
 				                           // --- ROTAS DE ADMIN ---
 				                           // Somente ADMIN pode gerenciar os Leases (Tipos de Locação)
-				                           .requestMatchers(HttpMethod.POST, "/leases").hasRole("ADMIN")
-				                           .requestMatchers(HttpMethod.PUT, "/leases/**").hasRole("ADMIN")
-				                           .requestMatchers(HttpMethod.DELETE, "/leases/**").hasRole("ADMIN")
+				                           .requestMatchers(HttpMethod.POST, "/leases").authenticated()
+				                           .requestMatchers(HttpMethod.PUT, "/leases/**").authenticated()
+				                           .requestMatchers(HttpMethod.DELETE, "/leases/**").authenticated()
 
-				                           // --- ROTAS DE USUÁRIO AUTENTICADO (USER ou ADMIN) ---
-				                           .requestMatchers(HttpMethod.POST, "/leases/hire-lease/**").authenticated()
-				                           .requestMatchers(HttpMethod.PUT, "/user/**").authenticated()
+				                           // -- ROTAS DE RESERVA
+				                           .requestMatchers("/reservations/**").authenticated()
+
+				                           // -- ROTAS DE CLIENTE
+				                           .requestMatchers("/clients/**").authenticated()
 
 				                           .requestMatchers(
 						                           "/v3/api-docs/**",

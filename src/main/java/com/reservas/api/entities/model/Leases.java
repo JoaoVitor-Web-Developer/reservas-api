@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,7 +17,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = "reservations")
+@ToString(exclude = {"owner", "reservations"})
 public class Leases {
 
 	@Id
@@ -43,8 +43,17 @@ public class Leases {
 	private Integer minTime;
 
 	@Column(nullable = false)
-	private LocalDate createdAt;
+	private LocalDateTime createdAt;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id", nullable = false)
+	private User owner;
 
 	@OneToMany(mappedBy = "leases", fetch = FetchType.LAZY)
 	private List<Reservations> reservations;
+
+	@PrePersist
+	public void onCreate() {
+		this.createdAt = LocalDateTime.now();
+	}
 }

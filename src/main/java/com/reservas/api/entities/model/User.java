@@ -2,10 +2,7 @@ package com.reservas.api.entities.model;
 
 import com.reservas.api.entities.enums.Role;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,11 +15,12 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "clients")
+@Table(name = "user")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(exclude = {"client", "leases", "reservations"})
 public class User implements UserDetails {
 
 	@Id
@@ -30,37 +28,32 @@ public class User implements UserDetails {
 	private UUID id;
 
 	@Column(nullable = false)
-	private String name;
-
-	@Column(nullable = false)
 	private String email;
-
-	@Column
-	private String phone;
-
-	@Column
-	private String cpf;
-
-	@Column(nullable = false)
-	private LocalDate createdAt;
 
 	@Column(nullable = false)
 	private String password;
 
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private Role role;
+
 	@Column(nullable = false)
 	private boolean accountNonExpired = true;
-
 	@Column(nullable = false)
 	private boolean accountNonLocked = true;
-
 	@Column(nullable = false)
 	private boolean credentialsNonExpired = true;
-
 	@Column(nullable = false)
 	private boolean enabled = true;
 
-	@Enumerated(EnumType.STRING)
-	private Role role;
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+	private Client client;
+
+	@OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
+	private List<Leases> leases;
+
+	@OneToMany(mappedBy = "reservedBy", fetch = FetchType.LAZY)
+	private List<Reservations> reservationsMade;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

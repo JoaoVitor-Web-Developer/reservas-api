@@ -25,7 +25,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/leases")
 @RequiredArgsConstructor
-@Tag(name = "Leases (Locações)", description = "Endpoints para gerenciar e buscar Locações (Leases)") // Agrupa no Swagger UI
+@Tag(name = "Leases (Locações)", description = "Endpoints para gerenciar e buscar Locações (Leases)")
 public class LeasesController {
 
 	private final LeasesService leasesService;
@@ -40,8 +40,8 @@ public class LeasesController {
 			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
 			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
 
-		LocalDateTime startDateTime = startDate.atStartOfDay(); // Ex: 2025-10-24T00:00:00
-		LocalDateTime endDateTime = endDate.atTime(23, 59, 59); // Ex: 2025-10-24T23:59:59
+		LocalDateTime startDateTime = startDate.atStartOfDay();
+		LocalDateTime endDateTime = endDate.atTime(23, 59, 59);
 
 		return leasesService.listDisponibles(startDateTime, endDateTime);
 	}
@@ -71,12 +71,12 @@ public class LeasesController {
 	@Operation(summary = "Buscar Locação por ID", description = "Retorna os detalhes de uma locação específica com base no seu UUID.")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Locação encontrada e retornada",
-			             content = @Content(schema = @Schema(implementation = LeasesResponse.class))), // Example of specifying response schema
+			             content = @Content(schema = @Schema(implementation = LeasesResponse.class))),
 			@ApiResponse(responseCode = "404", description = "Locação não encontrada para o ID fornecido",
-			             content = @Content) // Empty content for error responses
+			             content = @Content)
 	})
 	@GetMapping("/{id}")
-	public LeasesResponse getLease(@PathVariable UUID id) {
+	public LeasesResponse getLeaseById(@PathVariable UUID id) {
 		return leasesService.findById(id);
 	}
 
@@ -105,23 +105,4 @@ public class LeasesController {
 		leasesService.delete(id);
 	}
 
-	@Operation(summary = "Contratar (Reservar) Locação", description = "Cria uma nova reserva para uma locação e usuário específicos no período informado. Requer Autenticação.")
-	@ApiResponses(value = {
-			@ApiResponse(responseCode = "201", description = "Reserva criada com sucesso", content = @Content(schema = @Schema(implementation = ReservationResponse.class))),
-			@ApiResponse(responseCode = "400", description = "Dados inválidos (datas, locação indisponível, etc)", content = @Content),
-			@ApiResponse(responseCode = "404", description = "Locação ou Usuário não encontrado", content = @Content),
-			@ApiResponse(responseCode = "401", description = "Não autenticado", content = @Content)
-	})
-	@SecurityRequirement(name = "bearerAuth")
-	@PostMapping("/hire-lease/{id}/{userId}")
-	public ResponseEntity<ReservationResponse> hireLease(@PathVariable UUID id, @PathVariable UUID userId, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-	                                                     @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
-
-		LocalDateTime startDateTime = startDate.atStartOfDay(); // Ex: 2025-10-24T00:00:00
-		LocalDateTime endDateTime = endDate.atTime(23, 59, 59);
-
-		ReservationResponse newReservation = leasesService.hireLease(id, userId, startDateTime, endDateTime);
-
-		return ResponseEntity.status(HttpStatus.CREATED).body(newReservation);
-	}
 }

@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import com.reservas.api.entities.dto.UserResponse;
 
 @Data
 @NoArgsConstructor
@@ -12,4 +11,5 @@ import com.reservas.api.entities.dto.UserResponse;
 public class LoginResponse {
     private String token;
     private Long expiresIn;
+	private UserResponse user;
 }

@@ -6,6 +6,7 @@ import com.reservas.api.entities.model.Leases;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Component
 public class LeasesMapper {
@@ -18,7 +19,7 @@ public class LeasesMapper {
 		leases.setHourValue(request.getHourValue());
 		leases.setMaxTime(request.getMaxTime());
 		leases.setMinTime(request.getMinTime());
-		leases.setCreatedAt(LocalDate.now());
+		leases.setCreatedAt(LocalDateTime.now());
 		return leases;
 	}
 
@@ -32,15 +33,30 @@ public class LeasesMapper {
 		response.setMaxTime(entity.getMaxTime());
 		response.setMinTime(entity.getMinTime());
 		response.setCreatedAt(LocalDate.now());
+		if (entity.getOwner() != null) {
+			response.setOwnerId(entity.getOwner().getId().toString());
+		}
 		return response;
 	}
 
 	public void updateEntityFromRequest(LeasesRequest request, Leases entity) {
-		entity.setName(request.getName());
-		entity.setType(request.getType());
+		if (request.getName() != null) {
+			entity.setName(request.getName());
+		}
+		if (request.getType() != null) {
+			entity.setType(request.getType());
+		}
+
 		entity.setDescription(request.getDescription());
-		entity.setHourValue(request.getHourValue());
-		entity.setMaxTime(request.getMaxTime());
-		entity.setMinTime(request.getMinTime());
+
+		if (request.getHourValue() != null) {
+			entity.setHourValue(request.getHourValue());
+		}
+		if (request.getMinTime() != null) {
+			entity.setMinTime(request.getMinTime());
+		}
+		if (request.getMaxTime() != null) {
+			entity.setMaxTime(request.getMaxTime());
+		}
 	}
 }

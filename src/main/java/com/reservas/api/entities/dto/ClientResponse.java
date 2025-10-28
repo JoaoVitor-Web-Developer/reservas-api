@@ -1,16 +1,17 @@
 package com.reservas.api.entities.dto;
 
-import com.reservas.api.entities.enums.Role;
 import lombok.Data;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
-public class UserResponse {
+public class ClientResponse {
+
 	private UUID id;
+	private String name;
 	private String email;
-	private Role role;
-	private ClientResponse client;
+	private String phone;
+	private String cpf;
+	private LocalDateTime createdAt;
 }

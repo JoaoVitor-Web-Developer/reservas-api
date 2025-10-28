@@ -5,7 +5,6 @@ import com.reservas.api.entities.dto.LoginRequest;
 import com.reservas.api.entities.dto.UserRegisterRequest;
 import com.reservas.api.entities.model.User;
 import com.reservas.api.repository.UserRepository;
-import com.reservas.api.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

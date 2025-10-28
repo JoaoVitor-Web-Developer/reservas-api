@@ -15,12 +15,13 @@ public class UserRegisterRequest {
 	@Email
 	private String email;
 
-	private String phone;
+	@NotBlank(message = "Password is required")
+	@Size(min = 8, message = "Password must have at least 8 characters")
+	private String password;
 
 	@NotBlank(message = "CPF is required")
 	private String cpf;
 
-	@NotBlank(message = "Password is required")
-	@Size(min = 8, message = "Password must have at least 8 characters")
-	private String password;
+	@NotBlank(message = "Phone is required")
+	private String phone;
 }

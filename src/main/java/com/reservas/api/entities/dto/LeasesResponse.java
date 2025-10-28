@@ -17,4 +17,5 @@ public class LeasesResponse {
 	private Integer maxTime;
 	private Integer minTime;
 	private LocalDate createdAt;
+	private String ownerId;
 }
