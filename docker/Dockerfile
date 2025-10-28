@@ -2,10 +2,10 @@ FROM gradle:8.7-jdk21-alpine AS builder
 
 WORKDIR /app
 
-COPY build.gradle settings.gradle ./
-COPY gradle ./gradle
+COPY ../build.gradle settings.gradle ./
+COPY ../gradle ./gradle
 
-COPY src ./src
+COPY ../src ./src
 
 RUN gradle build --no-daemon -x test
 

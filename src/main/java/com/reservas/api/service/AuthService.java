@@ -49,13 +49,11 @@ public class AuthService {
 		newUser.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
 
 		Client newClient = clientMapper.fromRegisterRequest(registerRequest);
-
-		newUser.setClient(newClient);
 		newClient.setUser(newUser);
 
-		User savedUser = userRepository.save(newUser);
+		Client savedClient = clientRepository.save(newClient);
 
-		return userMapper.toResponse(savedUser);
+		return userMapper.toResponse(savedClient.getUser());
 	}
 
 	public LoginResponse login(LoginRequest loginRequest) {

@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -45,15 +45,7 @@ public class User implements UserDetails {
 	private boolean credentialsNonExpired = true;
 	@Column(nullable = false)
 	private boolean enabled = true;
-
-	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
-	private Client client;
-
-	@OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
-	private List<Leases> leases;
-
-	@OneToMany(mappedBy = "reservedBy", fetch = FetchType.LAZY)
-	private List<Reservations> reservationsMade;
+	
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

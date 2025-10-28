@@ -13,7 +13,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"user", "reservations"})
+@ToString(exclude = {"users", "reservations"})
 public class Client {
 
 	@Id

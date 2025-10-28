@@ -9,6 +9,7 @@ import com.reservas.api.entities.model.Leases;
 import com.reservas.api.entities.model.Reservations;
 import com.reservas.api.entities.model.User;
 import com.reservas.api.exception.BusinessException;
+import com.reservas.api.exception.ForbiddenException;
 import com.reservas.api.exception.ResourceNotFoundException;
 import com.reservas.api.repository.ClientRepository;
 import com.reservas.api.repository.LeasesRepository;
@@ -104,6 +105,10 @@ public class ReservationService {
 		User currentUser = getCurrentAuthenticatedUser();
 		Reservations reservations = reservationRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Reservation not found"));
+
+		if (!reservations.getReservedBy().getId().equals(currentUser.getId())) {
+			throw new ForbiddenException("You can only cancel your own reservations.");
+		}
 
 		if (reservations.getStatus() == ReservationStatus.COMPLETED || reservations.getStatus() == ReservationStatus.CANCELED) {
 			throw new BusinessException("Reservation cannot be canceled.");
