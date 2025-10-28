@@ -35,7 +35,7 @@ public class Client {
 	@Column(nullable=false, updatable=false)
 	private LocalDateTime createdAt;
 
-	@OneToOne(fetch=FetchType.LAZY)
+	@OneToOne(fetch=FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinColumn(name="user_id", referencedColumnName="id", nullable=false, unique=true)
 	private User user;
 
