@@ -41,5 +41,8 @@ public class ClientMapper {
 		if (request.getPhone() != null) {
 			cliente.setPhone(request.getPhone());
 		}
+		if (request.getCpf() != null) {
+			cliente.setCpf(request.getCpf());
+		}
 	}
 }

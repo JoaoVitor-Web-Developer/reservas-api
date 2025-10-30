@@ -17,39 +17,44 @@ import java.util.UUID;
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservations, UUID> {
 
-	List<Reservations> findByReservedBy(User reservedBy);
+    List<Reservations> findByReservedBy(User reservedBy);
 
-	@Query("SELECT r.leases.id FROM Reservations r " +
-			"WHERE r.status != :excludedStatus " +
-			"AND (r.startDate < :endDate) " +
-			"AND (r.endDate > :startDate)"
-	)
-	List<UUID> findTypesLocationsIdWithConflictingReservations(
-			@Param("startDate") LocalDateTime startDate,
-			@Param("endDate") LocalDateTime endDate,
-			@Param("excludedStatus") ReservationStatus excludedStatus
-	);
+    @Query("SELECT r.leases.id FROM Reservations r " +
+            "WHERE r.status != :excludedStatus " +
+            "AND (r.startDate < :endDate) " +
+            "AND (r.endDate > :startDate)"
+    )
+    List<UUID> findTypesLocationsIdWithConflictingReservations(
+            @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate,
+            @Param("excludedStatus") ReservationStatus excludedStatus
+    );
 
-	@Query("SELECT COUNT(r) > 0 FROM Reservations r " +
-			"WHERE r.reservedBy = :user " +
-			"AND r.status NOT IN (:excludedStatuses)")
-	boolean existsByUserAndActiveReservations(
-			@Param("user") User user,
-			@Param("excludedStatuses") List<ReservationStatus> excludedStatuses
-	);
+    @Query("SELECT COUNT(r) > 0 FROM Reservations r " +
+            "WHERE r.reservedBy = :user " +
+            "AND r.status NOT IN (:excludedStatuses)")
+    boolean existsByUserAndActiveReservations(
+            @Param("user") User user,
+            @Param("excludedStatuses") List<ReservationStatus> excludedStatuses
+    );
 
+    boolean existsByLeases(Leases leases);
 
-	boolean existsByLeases(Leases leases);
+    List<Reservations> findByReservedByOrderByStartDateDesc(User reservadoPor);
 
-	List<Reservations> findByReservedByOrderByStartDateDesc(User reservadoPor);
+    List<Reservations> findByStatusAndEndDateBefore(ReservationStatus status, LocalDateTime date);
 
-	boolean existsByClient(Client client);
+    boolean existsByClient(Client client);
 
-
-	boolean existsByLeasesAndStatusInAndStartDateLessThanEqualAndEndDateGreaterThanEqual(
-			Leases leases,
-			List<ReservationStatus> statusList,
-			LocalDateTime endDateQueryParam,
-			LocalDateTime startDateQueryParam
-	);
+    @Query("SELECT CASE WHEN COUNT(r) > 0 THEN true ELSE false END FROM Reservations r " +
+            "WHERE r.leases = :leases " +
+            "AND r.status IN :statuses " +
+            "AND r.startDate <= :endDate " +
+            "AND r.endDate >= :startDate")
+    boolean existsByLeasesAndStatusInAndStartDateLessThanEqualAndEndDateGreaterThanEqual(
+            @Param("leases") Leases leases,
+            @Param("statuses") List<ReservationStatus> statuses,
+            @Param("endDate") LocalDateTime endDate,
+            @Param("startDate") LocalDateTime startDate
+    );
 }

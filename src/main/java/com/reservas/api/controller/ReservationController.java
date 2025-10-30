@@ -52,12 +52,12 @@ public class ReservationController {
 		return ResponseEntity.ok(reservationService.findMyReservations());
 	}
 
-	@Operation(summary = "Cancelar Minha Reserva", description = "Cancela uma reserva específica do usuário autenticado. Requer autenticação. ADMIN pode cancelar qualquer reserva.")
+	@Operation(summary = "Cancelar Minha Reserva", description = "Cancela uma reserva específica do usuário autenticado. Requer autenticação.")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "204", description = "Reserva cancelada com sucesso", content = @Content),
 			@ApiResponse(responseCode = "400", description = "Não pode cancelar (ex: status inválido, prazo expirado)", content = @Content),
 			@ApiResponse(responseCode = "401", description = "Não autenticado", content = @Content),
-			@ApiResponse(responseCode = "403", description = "Acesso negado (tentando cancelar reserva de outro usuário sem ser ADMIN)", content = @Content),
+			@ApiResponse(responseCode = "403", description = "Acesso negado", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Reserva não encontrada", content = @Content)
 	})
 	@SecurityRequirement(name = "bearerAuth")
@@ -65,5 +65,21 @@ public class ReservationController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void cancelMyReservation(@Parameter @PathVariable UUID id) {
 		reservationService.cancelMyReservation(id);
+	}
+
+
+	@Operation(summary = "Confirmar MInha Reserva", description = "Confirma uma serva específica do usuário autenticado. Requer autenticação.")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "204", description = "Reserva confirmada com sucesso", content = @Content),
+			@ApiResponse(responseCode = "400", description = "Não pode confirmar (ex: status inválido, prazo expirado)", content = @Content),
+			@ApiResponse(responseCode = "401", description = "Não autenticado", content = @Content),
+			@ApiResponse(responseCode = "403", description = "Acesso negado", content = @Content),
+			@ApiResponse(responseCode = "404", description = "Reserva não encontrada", content = @Content)
+	})
+	@PostMapping("/{id}/confirm")
+	@SecurityRequirement(name = "bearerAuth")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void confirmMyReservation(@Parameter @PathVariable UUID id) {
+		reservationService.confirmReservation(id);
 	}
 }

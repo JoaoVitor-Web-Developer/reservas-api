@@ -43,13 +43,15 @@ public class ReservationService {
 		Client currentClient = clientRepository.findByUser(currentUser)
 				.orElseThrow(() -> new ResourceNotFoundException("Client not found from user logged."));
 
-		if (reservationRequest.getEndDate().isBefore(reservationRequest.getStartDate()) || reservationRequest.getEndDate().equals(reservationRequest.getStartDate())) {
-			throw new BusinessException("End date cannot be before start date.");
+		if (reservationRequest.getEndDate().isBefore(reservationRequest.getStartDate()) ||
+				reservationRequest.getEndDate().equals(reservationRequest.getStartDate())) {
+			throw new BusinessException("End date must be after start date.");
 		}
 
 		if (reservationRequest.getStartDate().isBefore(LocalDateTime.now())) {
-			throw new BusinessException("Start date cannot be before end date.");
+			throw new BusinessException("Start date cannot be in the past.");
 		}
+
 
 		Leases leases = leasesRepository.findById(reservationRequest.getLeaseId())
 				.orElseThrow(() -> new ResourceNotFoundException("Lease not found from user logged."));
@@ -124,5 +126,24 @@ public class ReservationService {
 			throw new IllegalStateException("User not authenticated correctly.");
 		}
 		return (User) authentication.getPrincipal();
+	}
+
+	@Transactional
+	public void confirmReservation(UUID id) {
+		User currentUser = getCurrentAuthenticatedUser();
+		Reservations reservations = reservationRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Reservation not found"));
+
+		if (!reservations.getReservedBy().getId().equals(currentUser.getId())) {
+			throw new ForbiddenException("You can only confirm your own reservations.");
+		}
+
+		if (reservations.getStatus() == ReservationStatus.CONFIRMED
+				|| reservations.getStatus() == ReservationStatus.CANCELED) {
+			throw new BusinessException("Reservation cannot be confirmed.");
+		}
+
+		reservations.setStatus(ReservationStatus.CONFIRMED);
+		reservationRepository.save(reservations);
 	}
 }
