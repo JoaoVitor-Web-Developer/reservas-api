@@ -4,9 +4,7 @@ API para gerenciamento de reservas, desenvolvida com Spring Boot e Java 21.
 
 ## Pré-requisitos
 
-- Docker e Docker Compose instalados
-- Java 21
-- Gradle
+- Docker instalado
 
 ## Como executar com Docker (Recomendado)
 
@@ -18,14 +16,6 @@ API para gerenciamento de reservas, desenvolvida com Spring Boot e Java 21.
 2. Construa e execute os containers
     ```bash 
     docker compose up --build
-   
-🔹 O Docker irá:
-
-🔹 Baixar e iniciar o banco MySQL
-
-🔹 Compilar o backend com Gradle
-
-🔹 Subir a API Spring Boot automaticamente
 
 3. Acesse da API
    ```bash
