@@ -48,10 +48,6 @@ public class ReservationService {
 			throw new BusinessException("End date must be after start date.");
 		}
 
-		if (reservationRequest.getStartDate().isBefore(LocalDateTime.now())) {
-			throw new BusinessException("Start date cannot be in the past.");
-		}
-
 
 		Leases leases = leasesRepository.findById(reservationRequest.getLeaseId())
 				.orElseThrow(() -> new ResourceNotFoundException("Lease not found from user logged."));
